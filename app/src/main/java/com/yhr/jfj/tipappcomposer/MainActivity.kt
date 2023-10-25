@@ -1,8 +1,10 @@
 package com.yhr.jfj.tipappcomposer
 
+import android.hardware.lights.Light
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -53,7 +55,7 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 // TopHeader Functiion where user can see how much money the need to pay
-@Preview
+//@Preview
 @Composable
 fun TopHeader(totalPerPerson: Double = 134.0) {
     Surface(
@@ -81,6 +83,24 @@ fun TopHeader(totalPerPerson: Double = 134.0) {
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.ExtraBold
             )
+        }
+    }
+}
+
+// MainContent function where user can enter amount and add person for tpis
+@Preview(showBackground = true)
+@Composable
+fun MainContent(){
+    Surface(modifier = Modifier
+        .padding(5.dp)
+        .fillMaxWidth(),
+        shape = CircleShape.copy(all = CornerSize(12.dp)),
+        border = BorderStroke(width = 1.dp, color = Color.LightGray)
+        ) {
+        Column {
+            Text(text = "Shadow")
+            Text(text = "Light")
+            Text(text = "YHRJFJ")
         }
     }
 }
