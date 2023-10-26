@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -37,7 +38,8 @@ fun RoundIconsButton(
 ) {
     Card(
         modifier = Modifier
-            .padding(all = 4.dp)
+            .padding(all = 4.dp).clip(shape = CircleShape)
+            .size(40.dp)
             .background(backgroundColor)
             .clickable {
                 onClick.invoke()
