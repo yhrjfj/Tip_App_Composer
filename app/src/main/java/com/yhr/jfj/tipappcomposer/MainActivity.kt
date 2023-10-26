@@ -178,6 +178,7 @@ fun BillForm(
                     }
                 }
             } else {
+                // When user does not give any input
                 Box {
 
                 }
