@@ -2,6 +2,7 @@ package com.yhr.jfj.tipappcomposer
 
 import android.hardware.lights.Light
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -101,7 +102,9 @@ fun TopHeader(totalPerPerson: Double = 134.0) {
 @Preview(showBackground = true)
 @Composable
 fun MainContent() {
-
+    BillForm(){ billAmt ->
+        Log.d("Amount", "$billAmt")
+    }
 }
 
 // BillForm
@@ -134,7 +137,7 @@ fun BillForm(modifier: Modifier = Modifier,
                 isSingleLine = true,
                 onAction = KeyboardActions {
                     if (!validState) return@KeyboardActions
-                    // TODO: onValueChange
+                    onValChange(totalBillState.value.trim())
                     keybordController?.hide()
                 }
             )
