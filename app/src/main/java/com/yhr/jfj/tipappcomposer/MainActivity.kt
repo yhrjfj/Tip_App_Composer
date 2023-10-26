@@ -7,16 +7,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Minimize
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yhr.jfj.tipappcomposer.components.InputField
 import com.yhr.jfj.tipappcomposer.ui.theme.TipAppComposerTheme
+import com.yhr.jfj.tipappcomposer.widgets.RoundIconsButton
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +110,7 @@ fun TopHeader(totalPerPerson: Double = 134.0) {
 @Preview(showBackground = true)
 @Composable
 fun MainContent() {
-    BillForm(){ billAmt ->
+    BillForm() { billAmt ->
         Log.d("Amount", "$billAmt")
     }
 }
@@ -110,9 +118,10 @@ fun MainContent() {
 // BillForm
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BillForm(modifier: Modifier = Modifier,
-             onValChange: (String) -> Unit = {}
-             ){
+fun BillForm(
+    modifier: Modifier = Modifier,
+    onValChange: (String) -> Unit = {},
+) {
     val totalBillState = remember {
         mutableStateOf("")
     }
@@ -127,8 +136,10 @@ fun BillForm(modifier: Modifier = Modifier,
         shape = CircleShape.copy(all = CornerSize(12.dp)),
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
-        Column(modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            modifier = Modifier.padding(5.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
         ) {
             InputField(
                 valueState = totalBillState,
@@ -141,9 +152,40 @@ fun BillForm(modifier: Modifier = Modifier,
                     keybordController?.hide()
                 }
             )
+            if (validState) {
+                Row(
+                    modifier = Modifier.padding(5.dp),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(
+                        text = "Split",
+                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                    )
+                    Spacer(modifier = Modifier.width(120.dp))
+                    Row(
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        RoundIconsButton(
+                            imageVector = Icons.Default.Remove,
+                            contentDescription = "Minimize",
+                            onClick = { /*TODO*/ })
+
+                        RoundIconsButton(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Minimize",
+                            onClick = { /*TODO*/ })
+                    }
+                }
+            } else {
+                Box {
+
+                }
+            }
         }
     }
 }
+
 //@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
