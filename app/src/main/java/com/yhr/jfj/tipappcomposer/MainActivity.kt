@@ -28,8 +28,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -122,13 +124,22 @@ fun BillForm(
     modifier: Modifier = Modifier,
     onValChange: (String) -> Unit = {},
 ) {
+    // Amount which need to pay
     val totalBillState = remember {
         mutableStateOf("")
     }
     val validState = remember(totalBillState.value) {
         totalBillState.value.trim().isNotEmpty()
     }
+    // Person
+    var totalPerson by remember {
+        mutableStateOf(0)
+    }
+
+    // Keyboard controller
     val keybordController = LocalSoftwareKeyboardController.current
+
+    //Content
     Surface(
         modifier = Modifier
             .padding(5.dp)
@@ -159,7 +170,8 @@ fun BillForm(
                 ) {
                     Text(
                         text = "Split",
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterVertically)
                             .padding(start = 16.dp),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
@@ -173,10 +185,16 @@ fun BillForm(
                         RoundIconsButton(
                             imageVector = Icons.Default.Remove,
                             contentDescription = "Minimize",
-                            onClick = { Log.d("Icon", "Minus") })
+                            onClick = {
+                                if (totalPerson <= 0){
+                                    totalPerson = 0
+                                } else{
+                                    totalPerson -= 1
+                                }
+                            })
                         // Number which show how many person will split the bill
                         Text(
-                            text = "2",
+                            text = "${totalPerson}",
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .padding(start = 9.dp, end = 9.dp)
@@ -185,7 +203,9 @@ fun BillForm(
                         RoundIconsButton(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Minimize",
-                            onClick = { Log.d("Icon", "Add") })
+                            onClick = {
+                                totalPerson += 1
+                            })
                     }
                 }
             } else {
