@@ -160,21 +160,32 @@ fun BillForm(
                     Text(
                         text = "Split",
                         modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                            .padding(start = 16.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.width(120.dp))
                     Row(
                         modifier = Modifier.padding(horizontal = 5.dp),
                         horizontalArrangement = Arrangement.End
                     ) {
+                        // Minus button which minimize person
                         RoundIconsButton(
                             imageVector = Icons.Default.Remove,
                             contentDescription = "Minimize",
-                            onClick = { /*TODO*/ })
-
+                            onClick = { Log.d("Icon", "Minus") })
+                        // Number which show how many person will split the bill
+                        Text(
+                            text = "2",
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(start = 9.dp, end = 9.dp)
+                        )
+                        // Add button which increase person
                         RoundIconsButton(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Minimize",
-                            onClick = { /*TODO*/ })
+                            onClick = { Log.d("Icon", "Add") })
                     }
                 }
             } else {

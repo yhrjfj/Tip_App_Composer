@@ -1,5 +1,6 @@
 package com.yhr.jfj.tipappcomposer.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -43,7 +44,7 @@ fun InputField(
                 contentDescription = "Money Icon"
             )
         },
-        modifier = modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+        modifier = modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp).fillMaxWidth(),
         singleLine = isSingleLine,
         textStyle = TextStyle(fontSize = 18.sp),
         enabled = enabled,
