@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+//import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -131,9 +133,13 @@ fun BillForm(
     val validState = remember(totalBillState.value) {
         totalBillState.value.trim().isNotEmpty()
     }
-    // Person
+    // How many person should pay
     var totalPerson by remember {
         mutableStateOf(0)
+    }
+    // Slider for entering tips percentage
+    var slidePositionState by remember {
+        mutableStateOf(0f)
     }
 
     // Keyboard controller
@@ -163,57 +169,97 @@ fun BillForm(
                     keybordController?.hide()
                 }
             )
-            if (validState) {
+//            if (validState) {
+            Row(
+                modifier = Modifier.padding(5.dp),
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Text(
+                    text = "Split",
+                    modifier = Modifier
+                        .align(alignment = Alignment.CenterVertically)
+                        .padding(start = 16.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(120.dp))
                 Row(
-                    modifier = Modifier.padding(5.dp),
-                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    horizontalArrangement = Arrangement.End
                 ) {
+                    // Minus button which minimize person
+                    RoundIconsButton(
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = "Minimize",
+                        onClick = {
+                            if (totalPerson <= 0) {
+                                totalPerson = 0
+                            } else {
+                                totalPerson -= 1
+                            }
+                        })
+                    // Number which show how many person will split the bill
                     Text(
-                        text = "Split",
+                        text = "${totalPerson}",
                         modifier = Modifier
-                            .align(alignment = Alignment.CenterVertically)
-                            .padding(start = 16.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
+                            .align(Alignment.CenterVertically)
+                            .padding(start = 9.dp, end = 9.dp)
                     )
-                    Spacer(modifier = Modifier.width(120.dp))
-                    Row(
-                        modifier = Modifier.padding(horizontal = 5.dp),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        // Minus button which minimize person
-                        RoundIconsButton(
-                            imageVector = Icons.Default.Remove,
-                            contentDescription = "Minimize",
-                            onClick = {
-                                if (totalPerson <= 0){
-                                    totalPerson = 0
-                                } else{
-                                    totalPerson -= 1
-                                }
-                            })
-                        // Number which show how many person will split the bill
-                        Text(
-                            text = "${totalPerson}",
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(start = 9.dp, end = 9.dp)
-                        )
-                        // Add button which increase person
-                        RoundIconsButton(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Minimize",
-                            onClick = {
-                                totalPerson += 1
-                            })
-                    }
-                }
-            } else {
-                // When user does not give any input
-                Box {
-
+                    // Add button which increase person
+                    RoundIconsButton(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Minimize",
+                        onClick = {
+                            totalPerson += 1
+                        })
                 }
             }
+
+            // Tip row where user can see how mouch money should he/she need to pay
+            Row(
+                modifier = Modifier.padding(5.dp),
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Text(
+                    text = "Tip",
+                    modifier = Modifier
+                        .align(alignment = Alignment.CenterVertically)
+                        .padding(start = 16.dp),
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.width(200.dp))
+                Text(
+                    text = "$33.00",
+                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                )
+            }
+
+            // Column where user can slide and select his/her tip percentage
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(text = "$$slidePositionState%", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Slider(value = slidePositionState, onValueChange = { newVal ->
+                    slidePositionState = newVal
+                    Log.d("Slider", "BillForm: $newVal")
+                })
+            }
+
+
+//            } else {
+//                // When user does not give any input
+//                Box {
+//
+//                }
+//            }
         }
     }
 }
