@@ -55,7 +55,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApp {
                 Column {
-                    TopHeader()
                     MainContent()
                 }
             }
@@ -82,8 +81,9 @@ fun MyApp(content: @Composable () -> Unit) {
 fun TopHeader(totalPerPerson: Double = 134.0) {
     Surface(
         modifier = Modifier
+            .padding(all = 16.dp)
             .fillMaxWidth()
-            .height(150.dp)
+            .height(200.dp)
             .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
 //            .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
         color = Color(0xFFE9D7F7)
@@ -102,8 +102,8 @@ fun TopHeader(totalPerPerson: Double = 134.0) {
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "$$total",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 40.sp
             )
         }
     }
@@ -146,9 +146,10 @@ fun BillForm(
     val keybordController = LocalSoftwareKeyboardController.current
 
     //Content
+    TopHeader()
     Surface(
         modifier = Modifier
-            .padding(5.dp)
+            .padding(start = 16.dp, top = 0.dp, end = 16.dp, bottom = 16.dp)
             .fillMaxWidth(),
         shape = CircleShape.copy(all = CornerSize(12.dp)),
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
@@ -243,14 +244,22 @@ fun BillForm(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(text = "$$slidePositionState%", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-                
+                Text(
+                    text = "$${slidePositionState*100}%",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                Slider(value = slidePositionState, onValueChange = { newVal ->
-                    slidePositionState = newVal
-                    Log.d("Slider", "BillForm: $newVal")
-                })
+
+                Slider(
+                    value = slidePositionState, onValueChange = { newVal ->
+                        slidePositionState = newVal
+                        Log.d("Slider", "BillForm: $newVal")
+                    },
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                    steps = 19
+                )
             }
 
 
