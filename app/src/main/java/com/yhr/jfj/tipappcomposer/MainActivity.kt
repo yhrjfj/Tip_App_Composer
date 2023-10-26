@@ -101,6 +101,15 @@ fun TopHeader(totalPerPerson: Double = 134.0) {
 @Preview(showBackground = true)
 @Composable
 fun MainContent() {
+
+}
+
+// BillForm
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun BillForm(modifier: Modifier = Modifier,
+             onValChange: (String) -> Unit = {}
+             ){
     val totalBillState = remember {
         mutableStateOf("")
     }
@@ -117,7 +126,7 @@ fun MainContent() {
     ) {
         Column(modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+        ) {
             InputField(
                 valueState = totalBillState,
                 labelId = "Enter Bill",
@@ -132,7 +141,6 @@ fun MainContent() {
         }
     }
 }
-
 //@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
