@@ -149,10 +149,15 @@ fun BillForm(
     }
 
     // Show percentage in Int
-    val tipPercentage = (slidePositionState * 100).nextUp().toInt()
+    val tipPercentage = (slidePositionState * 100).toInt()
 
     // Keyboard controller
     val keybordController = LocalSoftwareKeyboardController.current
+
+    // Section for calculate total bill
+    var tipAmountState by remember {
+        mutableStateOf(0.0)
+    }
 
     //Content
     TopHeader()
@@ -179,111 +184,129 @@ fun BillForm(
                     keybordController?.hide()
                 }
             )
-//            if (validState) {
-            Row(
-                modifier = Modifier.padding(5.dp),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Text(
-                    text = "Split",
-                    modifier = Modifier
-                        .align(alignment = Alignment.CenterVertically)
-                        .padding(start = 16.dp),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.width(120.dp))
+            if (validState) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 5.dp),
-                    horizontalArrangement = Arrangement.End
+                    modifier = Modifier.padding(5.dp),
+                    horizontalArrangement = Arrangement.Start,
                 ) {
-                    // Minus button which minimize person
-                    RoundIconsButton(
-                        imageVector = Icons.Default.Remove,
-                        contentDescription = "Minimize",
-                        onClick = {
-                            if (splitByState <= 1) {
-                                splitByState = 1
-                            } else {
-                                splitByState -= 1
-                            }
-                        })
-
-                    // Number which show how many person will split the bill
                     Text(
-                        text = "${splitByState}",
+                        text = "Split",
                         modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(start = 9.dp, end = 9.dp)
+                            .align(alignment = Alignment.CenterVertically)
+                            .padding(start = 16.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.width(120.dp))
+                    Row(
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        // Minus button which minimize person
+                        RoundIconsButton(
+                            imageVector = Icons.Default.Remove,
+                            contentDescription = "Minimize",
+                            onClick = {
+                                if (splitByState <= 1) {
+                                    splitByState = 1
+                                } else {
+                                    splitByState -= 1
+                                }
+                            })
+
+                        // Number which show how many person will split the bill
+                        Text(
+                            text = "$splitByState",
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(start = 9.dp, end = 9.dp)
+                        )
+
+                        // Add button which increase person
+                        RoundIconsButton(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Minimize",
+                            onClick = {
+                                if (splitByState < range.last) {
+                                    splitByState += 1
+                                }
+                            })
+                    }
+                }
+
+                // Tip row where user can see how mouch money should he/she need to pay
+                Row(
+                    modifier = Modifier.padding(5.dp),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(
+                        text = "Tip",
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterVertically)
+                            .padding(start = 16.dp),
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Spacer(modifier = Modifier.width(200.dp))
+                    Text(
+                        text = "${tipAmountState}%",
+                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                    )
+                }
+
+                // Column where user can slide and select his/her tip percentage
+                Column(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "$tipPercentage%",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
 
-                    // Add button which increase person
-                    RoundIconsButton(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Minimize",
-                        onClick = {
-                            if (splitByState < range.last){
-                                splitByState += 1
-                            }
-                        })
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Slider for increase tip percentages
+                    Slider(
+                        value = slidePositionState, onValueChange = { newVal ->
+                            slidePositionState = newVal
+                            tipAmountState = calculateTotalTip(
+                                totalBill = totalBillState.value.toDouble(),
+                                tipPercentage = tipPercentage
+                            )
+                        },
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                        steps = 99
+                    )
+                }
+            } else {
+                // When user does not give any input
+                Box {
+
                 }
             }
-
-            // Tip row where user can see how mouch money should he/she need to pay
-            Row(
-                modifier = Modifier.padding(5.dp),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Text(
-                    text = "Tip",
-                    modifier = Modifier
-                        .align(alignment = Alignment.CenterVertically)
-                        .padding(start = 16.dp),
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.width(200.dp))
-                Text(
-                    text = "$33.00",
-                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                )
-            }
-
-            // Column where user can slide and select his/her tip percentage
-            Column(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = "$tipPercentage%",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Slider(
-                    value = slidePositionState, onValueChange = { newVal ->
-                        slidePositionState = newVal
-                    },
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                    steps = 99
-                )
-            }
-
-
-//            } else {
-//                // When user does not give any input
-//                Box {
-//
-//                }
-//            }
         }
     }
 }
+
+// Function for calculating tip amount which show in the Tip section
+fun calculateTotalTip(totalBill: Double, tipPercentage: Int): Double {
+    return if (totalBill > 1 && totalBill.toString()
+            .isNotEmpty()
+    ) (totalBill * tipPercentage) / 100 else 0.0
+}
+//fun calculateTotalTip(totalBill: Double, tipPercentage: Double): Double {
+//    return if (totalBill > 0) {
+//        (totalBill * tipPercentage)
+//    } else {
+//        0.0
+//    }
+//}
+
 
 //@Preview(showBackground = true)
 @Composable
