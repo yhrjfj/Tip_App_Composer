@@ -134,9 +134,11 @@ fun BillForm(
         totalBillState.value.trim().isNotEmpty()
     }
     // How many person should pay
-    var totalPerson by remember {
-        mutableStateOf(0)
+    var splitByState by remember {
+        mutableStateOf(2)
     }
+    // Give range so that user can not access more then that
+    val range = IntRange(start = 1, endInclusive = 100)
     // Slider for entering tips percentage
     var slidePositionState by remember {
         mutableStateOf(0f)
@@ -193,15 +195,15 @@ fun BillForm(
                         imageVector = Icons.Default.Remove,
                         contentDescription = "Minimize",
                         onClick = {
-                            if (totalPerson <= 0) {
-                                totalPerson = 0
+                            if (splitByState <= 1) {
+                                splitByState = 1
                             } else {
-                                totalPerson -= 1
+                                splitByState -= 1
                             }
                         })
                     // Number which show how many person will split the bill
                     Text(
-                        text = "${totalPerson}",
+                        text = "${splitByState}",
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .padding(start = 9.dp, end = 9.dp)
@@ -211,7 +213,9 @@ fun BillForm(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Minimize",
                         onClick = {
-                            totalPerson += 1
+                            if (splitByState < range.last){
+                                splitByState += 1
+                            }
                         })
                 }
             }
