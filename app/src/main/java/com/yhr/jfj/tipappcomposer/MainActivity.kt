@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import com.yhr.jfj.tipappcomposer.components.InputField
 import com.yhr.jfj.tipappcomposer.ui.theme.TipAppComposerTheme
 import com.yhr.jfj.tipappcomposer.widgets.RoundIconsButton
+import kotlin.math.nextUp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,16 +134,22 @@ fun BillForm(
     val validState = remember(totalBillState.value) {
         totalBillState.value.trim().isNotEmpty()
     }
+
     // How many person should pay
     var splitByState by remember {
         mutableStateOf(2)
     }
+
     // Give range so that user can not access more then that
     val range = IntRange(start = 1, endInclusive = 100)
+
     // Slider for entering tips percentage
     var slidePositionState by remember {
         mutableStateOf(0f)
     }
+
+    // Show percentage in Int
+    val tipPercentage = (slidePositionState * 100).nextUp().toInt()
 
     // Keyboard controller
     val keybordController = LocalSoftwareKeyboardController.current
@@ -249,7 +256,7 @@ fun BillForm(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "$${slidePositionState*100}%",
+                    text = "$tipPercentage%",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -259,10 +266,9 @@ fun BillForm(
                 Slider(
                     value = slidePositionState, onValueChange = { newVal ->
                         slidePositionState = newVal
-                        Log.d("Slider", "BillForm: $newVal")
                     },
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                    steps = 19
+                    steps = 99
                 )
             }
 
