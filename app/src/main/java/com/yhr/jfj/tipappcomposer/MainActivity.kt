@@ -208,6 +208,7 @@ fun BillForm(
                                 splitByState -= 1
                             }
                         })
+
                     // Number which show how many person will split the bill
                     Text(
                         text = "${splitByState}",
@@ -215,6 +216,7 @@ fun BillForm(
                             .align(Alignment.CenterVertically)
                             .padding(start = 9.dp, end = 9.dp)
                     )
+
                     // Add button which increase person
                     RoundIconsButton(
                         imageVector = Icons.Default.Add,
