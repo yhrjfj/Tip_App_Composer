@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yhr.jfj.tipappcomposer.components.InputField
 import com.yhr.jfj.tipappcomposer.ui.theme.TipAppComposerTheme
+import com.yhr.jfj.tipappcomposer.util.calculateTotalTip
 import com.yhr.jfj.tipappcomposer.widgets.RoundIconsButton
 import kotlin.math.nextUp
 
@@ -292,21 +293,6 @@ fun BillForm(
         }
     }
 }
-
-// Function for calculating tip amount which show in the Tip section
-fun calculateTotalTip(totalBill: Double, tipPercentage: Int): Double {
-    return if (totalBill > 1 && totalBill.toString()
-            .isNotEmpty()
-    ) (totalBill * tipPercentage) / 100 else 0.0
-}
-//fun calculateTotalTip(totalBill: Double, tipPercentage: Double): Double {
-//    return if (totalBill > 0) {
-//        (totalBill * tipPercentage)
-//    } else {
-//        0.0
-//    }
-//}
-
 
 //@Preview(showBackground = true)
 @Composable
